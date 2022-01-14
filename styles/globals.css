@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-nftcerts-primary {
+  color: #2CDF80;
+}
+  
+.background-nftcerts-primary {
+  background: #2CDF80;
+}
