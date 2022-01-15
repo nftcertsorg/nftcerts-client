@@ -12,6 +12,7 @@ export default function Create() {
   const [formInput, updateFormInput] = useState({ name: "", description: "" });
   const [signer, setSigner] = useState(null);
   const [userAddr, setUserAddr] = useState(null);
+  const [publicKey, setPublicKey] = useState(null);
 
   useEffect(() => {
     fetchSigner()
@@ -26,6 +27,19 @@ export default function Create() {
     setSigner(_signer)
     setUserAddr(_userAddr)
   };
+
+  const getPublicKey = async () => {
+    const hash = await ethers.utils.keccak256(userAddr)
+    const signedMessage = await signer.signMessage('signed message')
+    const publicKey = ethers.utils.recoverPublicKey(hash, signedMessage)
+    console.log(publicKey)
+    const recoveredAddress = ethers.utils.computeAddress(ethers.utils.arrayify(publicKey))
+    if (addr != recoveredAddress) {
+      console.error('Something went wrong, the recovered address does not match the retrieved address')
+    } else {
+      setPublicKey(publicKey)
+    }
+  }
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -77,8 +91,11 @@ export default function Create() {
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const hashedData = hashData(data)
+      await getPublicKey()
+      console.log(publicKey)
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-      mintNft({ url, recipientAddress });
+      mintNft({ url, recipientAddress, hashedData });
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -86,23 +103,13 @@ export default function Create() {
 
   const hashData = (dataObject) => {
     const stringified = JSON.stringify(dataObject)
-    const hashedData = ethers.utils.id(stringified)
-    return hashedData
+    return ethers.utils.id(stringified)
   }
 
-  const mintNft = async ({ url, recipientAddress }) => {
+  const mintNft = async ({ url, recipientAddress, hashedData }) => {
       console.log('minting');
-      // const signer = await provider.getSigner()
-      // let userAddr = await signer.getAddress()
     
       const NFTCerts = new ethers.Contract(tokenAddress.tokenAddress, abi.abi, signer)
-    
-      const dataObject = {
-        issuer: 'some address',
-        creator: 'some address',
-      }
-      
-      const hashedData = hashData(dataObject)
 
       let tx = await NFTCerts.mint(recipientAddress, url, hashedData)
       await tx.wait()

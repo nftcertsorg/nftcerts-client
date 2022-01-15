@@ -24,7 +24,10 @@ export const getNfts = async (address) => {
 };
 
 export const getIpfsMetadata = async (uri) => {
-  const res = await fetch(uri);
-  const json = await res.json();
-  return json;
+  console.log(uri)
+  try {
+    const res = await fetch(uri);
+    const json = await res.json();
+    return json;
+  } catch (e) { console.error(e) }
 };
