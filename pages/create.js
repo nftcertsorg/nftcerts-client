@@ -67,8 +67,19 @@ export default function Create() {
 
   return (
     <>
-      <div className="shadow sm:rounded-md sm:overflow-hidden">
+      <div className="max-w-xl mx-auto shadow sm:rounded-md sm:overflow-hidden">
         <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+          <div>
+            <h3 className="text-lg leading-6 font-medium text-gray-900">Certificate Data</h3>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              Please enter the data you want to store in the certificate, based on the {' '}
+              <a 
+                className="text-green-600 hover:text-green-800 visited:text-green-600 font-semibold" 
+                href="https://www.imsglobal.org/sites/default/files/Badges/OBv2p0Final/index.html">
+                IMS Open Badges 2.0 Standard
+              </a>.
+            </p>
+          </div>
           <div>
             <label
               htmlFor="name"
@@ -83,7 +94,7 @@ export default function Create() {
                 onChange={(e) =>
                   updateFormInput({ ...formInput, name: e.target.value })
                 }
-                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
               ></input>
             </div>
 
@@ -104,7 +115,7 @@ export default function Create() {
                       description: e.target.value,
                     })
                   }
-                  className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                  className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                   placeholder="Nft Description"
                 ></textarea>
               </div>
@@ -141,7 +152,7 @@ export default function Create() {
                   <div className="flex text-sm text-gray-600">
                     <label
                       htmlFor="file-upload"
-                      className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                      className="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-green-500"
                     >
                       <span>Upload a file</span>
                       <input
@@ -152,7 +163,7 @@ export default function Create() {
                         onChange={uploadImage}
                       />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
+                    <p className="pl-1">for the certifcate image</p>
                   </div>
                   <p className="text-xs text-gray-500">
                     PNG, JPG, GIF up to 10MB
@@ -165,7 +176,7 @@ export default function Create() {
             <button
               onClick={onSave}
               type="submit"
-              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Save
             </button>
