@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getIpfsMetadata, getNfts } from "../utils/api";
+import { getNfts } from "../utils/api";
 import Link from "next/link";
 
 export default function CertificatesList({ address }) {
@@ -16,7 +16,7 @@ export default function CertificatesList({ address }) {
 
     const list = await Promise.all(
       result.map(async (nft) => {
-        const metadata = await getIpfsMetadata(nft.token_uri);
+        const metadata = nft.metadata ? JSON.parse(nft.metadata) : {};
         return {
           ...nft,
           metadata,
@@ -27,7 +27,7 @@ export default function CertificatesList({ address }) {
       list.filter((certificate) => certificate.metadata.openBadge)
     );
   }, [address]);
-
+  
   useEffect(() => {
     fetchCertificates();
   }, [fetchCertificates]);
@@ -40,7 +40,7 @@ export default function CertificatesList({ address }) {
       {certificates.map((certificate) => (
         <li key={certificate.block_number} className="relative overflow-hidden">
           <Link
-            href={`/certificates/${certificate.token_address}-${certificate.token_id}`}
+            href={`/certificates/${certificate.token_address}--${certificate.token_id}`}
           >
             <a>
               <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-green-500 overflow-hidden">

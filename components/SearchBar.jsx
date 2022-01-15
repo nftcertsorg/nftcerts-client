@@ -31,7 +31,6 @@ export default function SearchBar({ updateAddress }) {
             </div>
             <button
               onClick={() => {
-                console.log("saving");
                 updateAddress(address);
               }}
               className="flex px-3 mt-1 ml-3 cursor-pointer rounded-lg border-gray-300 border-solid border items-center"
