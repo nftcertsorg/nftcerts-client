@@ -12,7 +12,8 @@ export default function Create() {
   const [formInput, updateFormInput] = useState({ name: "", description: "" });
   const [signer, setSigner] = useState(null);
   const [userAddr, setUserAddr] = useState(null);
-  const [publicKey, setPublicKey] = useState(null);
+  const [recipientPublicKey, setRecipientPublicKey] = useState(null);
+  const [recipientAddress, setRecipientAddress] = useState(null);
 
   useEffect(() => {
     fetchSigner()
@@ -28,17 +29,25 @@ export default function Create() {
     setUserAddr(_userAddr)
   };
 
-  const getPublicKey = async () => {
-    const hash = await ethers.utils.keccak256(userAddr)
-    const signedMessage = await signer.signMessage('signed message')
-    const publicKey = ethers.utils.recoverPublicKey(hash, signedMessage)
-    console.log(publicKey)
-    const recoveredAddress = ethers.utils.computeAddress(ethers.utils.arrayify(publicKey))
-    if (addr != recoveredAddress) {
-      console.error('Something went wrong, the recovered address does not match the retrieved address')
-    } else {
-      setPublicKey(publicKey)
-    }
+  const getAddressFromPublicKey = (publicKey) => {
+    return ethers.utils.computeAddress(ethers.utils.arrayify(publicKey))
+  }
+
+  const encrypt = async (data) => {
+    const result = sigUtil.encrypt({
+      publicKey,
+      data: data,
+      version: 'x25519-xsalsa20-poly1305'
+    })
+  
+    return ethUtil.bufferToHex(Buffer.from(JSON.stringify(result), 'utf-8'))
+  }
+
+  const decrypt = async (data) => {
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum, "any"
+    )
+    return await provider.send('eth_decrypt', [data, recipientAddress])
   }
 
   const uploadImage = async (e) => {
@@ -55,47 +64,77 @@ export default function Create() {
   };
 
   const onSave = async () => {
-    const { name, description, recipientAddress } = formInput;
+    const { name, description, recipientPublicKey } = formInput;
+
+    const recipientAddress = getAddressFromPublicKey(recipientPublicKey)
 
     if (!name || !description || !fileUrl) return;
-    /* first, upload to IPFS */
-    const data = JSON.stringify({
+
+    const certificateData = {
       name,
       description,
       image: fileUrl,
-      openBadge: [
-        {
-          "@context": "https://w3id.org/openbadges/v2",
-          type: "Assertion",
-          recipient: {
-            type: "ethereumAddress",
-            identity: recipientAddress
-          },
-          issuedOn: Math.round((new Date()).getTime() / 1000),
-          verification: {
-            type: "SignedBadge",
-            creator: userAddr
-          },
-          badge: {
-            type: "BadgeClass",
-            id: hashData({name: name, issuer: userAddr}),
-            issuer: {
-              id: userAddr,
-              type: "ethereumAddress"
-            }
+      openBadge: {
+        "@context": "https://w3id.org/openbadges/v2",
+        type: "Assertion",
+        recipient: {
+          type: "ethereumAddress",
+          identity: recipientAddress
+        },
+        issuedOn: Math.round((new Date()).getTime() / 1000),
+        verification: {
+          type: "SignedBadge",
+          creator: userAddr
+        },
+        badge: {
+          type: "BadgeClass",
+          id: hashData({name: name, issuer: userAddr}),
+          issuer: {
+            id: userAddr,
+            type: "ethereumAddress"
           }
         }
-      ],
+      },
       encryption: false,
-    });
+    }
+
+    const certificateDataEncrypted = {
+      name: encrypt(name),
+      description: encrypt(description),
+      image: encrypt(fileUrl),
+      openBadge: {
+        "@context": encrypt("https://w3id.org/openbadges/v2"),
+        type: encrypt("Assertion"),
+        recipient: {
+          type: encrypt("ethereumAddress"),
+          identity: encrypt(recipientAddress)
+        },
+        issuedOn: Math.round((new Date()).getTime() / 1000),
+        verification: {
+          type: encrypt("SignedBadge"),
+          creator: encrypt(userAddr)
+        },
+        badge: {
+          type: encrypt("BadgeClass"),
+          id: hashData({name: name, issuer: userAddr}),
+          issuer: {
+            id: encrypt(userAddr),
+            type: encrypt("ethereumAddress")
+          }
+        }
+      },
+      encryption: true,
+    }
+
+    /* first, upload to IPFS */
+    const data = JSON.stringify(certificateData);
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       const hashedData = hashData(data)
-      await getPublicKey()
-      console.log(publicKey)
+
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-      mintNft({ url, recipientAddress, hashedData });
+      // mintNft({ url, recipientAddress, hashedData });
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -107,10 +146,7 @@ export default function Create() {
   }
 
   const mintNft = async ({ url, recipientAddress, hashedData }) => {
-      console.log('minting');
-    
       const NFTCerts = new ethers.Contract(tokenAddress.tokenAddress, abi.abi, signer)
-
       let tx = await NFTCerts.mint(recipientAddress, url, hashedData)
       await tx.wait()
   };
@@ -180,16 +216,16 @@ export default function Create() {
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-700"
               >
-                Recipient Address
+                Recipient PublicKey
               </label>
               <div className="mt-1">
                 <textarea
-                  id="recipientAddress"
-                  name="recipientAddress"
+                  id="recipientPublicKey"
+                  name="recipientPublicKey"
                   onChange={(e) =>
                     updateFormInput({
                       ...formInput,
-                      recipientAddress: e.target.value,
+                      recipientPublicKey: e.target.value,
                     })
                   }
                   className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
