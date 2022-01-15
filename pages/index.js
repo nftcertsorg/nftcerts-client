@@ -41,13 +41,13 @@ export default function LandingPage() {
                   <span className="block">See NFTCerts in action!</span>
                   <span className="block">Test our example Dapp.</span>
                 </h2>
-                <p className="mt-4 text-lg leading-6 text-indigo-200">
+                <p className="mt-4 text-lg leading-6 text-green-200">
                   Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
                   nec.
                 </p>
                 <a
                   href="#"
-                  className="mt-8 bg-white border border-transparent rounded-md shadow px-5 py-3 inline-flex items-center text-base font-medium text-green-600 hover:bg-green-50"
+                  className="mt-8 bg-white border border-transparent rounded-md shadow px-5 py-3 inline-flex items-center text-base font-medium text-nftcerts-primary hover:bg-green-50"
                 >
                   Test Demo
                 </a>
