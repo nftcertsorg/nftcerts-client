@@ -9,7 +9,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const navigation = [
-  { name: 'Create certificate', href: 'certificate', current: true },
+  { name: 'Create certificate', href: 'create', current: true },
   { name: 'View certificate', href: 'certificates', current: false },
   { name: 'Example dapp', href: '#', current: false },
 ]
