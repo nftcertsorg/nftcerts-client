@@ -20,20 +20,23 @@ export default function SearchBar({ updateAddress }) {
                 name="address"
                 id="address"
                 onChange={(e) => setAddress(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    updateAddress(address);
+                  }
+                }}
                 className="focus:ring-green-500 focus:border-green-500 block w-full pr-10 sm:text-sm border-gray-300 rounded-md"
                 placeholder="0x0000...0000"
               />
             </div>
             <button
               onClick={() => {
-                console.log('saving');
+                console.log("saving");
                 updateAddress(address);
               }}
               className="flex px-3 mt-1 ml-3 cursor-pointer rounded-lg border-gray-300 border-solid border items-center"
             >
-              <SearchIcon
-                className="h-5 w-5 text-gray-400 cursor-pointer"
-              />
+              <SearchIcon className="h-5 w-5 text-gray-400 cursor-pointer" />
             </button>
           </div>
         </div>
