@@ -1,9 +1,11 @@
+import { ShieldCheckIcon } from '@heroicons/react/solid'
+
 export default function Certificate() {
   return (
           <div className=" min-h-screen flex flex-col lg:flex-row w-full ">
             <div className="bg-slate-100 lg:w-1/2 flex justify-center items-center lg:h-screen lg:sticky lg:top-0">
-              <div className="bg-white max-w-lg shadow-2xl shadow-slate-900/5 rounded-xl mx-4 lg:mx-8 my-16">
-                <img src="https://ethereum.org/static/810eb64d89629231aa4d8c7fe5f20ee5/88221/developers-eth-blocks.webp" className="w-full" />
+              <div className="bg-white max-w-lg shadow-2xl shadow-slate-900/5 rounded-xl mx-4 lg:mx-8 my-16 scale-75">
+                <img src="https://i.imgur.com/2bUPGk7.png" className="w-100 rounded-xl"/>
               </div>
             </div>
             <div className=" flex-1 flex justify-center lg:items-center  ">
@@ -15,7 +17,7 @@ export default function Certificate() {
                   <span className="pl-1 pr-2 text-sm font-semibold">Nftcerts</span>
                 </div>
                 <h1 className="text-2xl font-bold leading-7 text-slate-900 sm:text-3xl mt-4">
-                  Ethereum Development 101 
+                  Solidity Development 101 
                 </h1>
                 <p className="text-slate-500 mt-2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam. Scelerisque amet elit non sit ut tincidunt condimentum. Nisl ultrices eu venenatis diam.
@@ -48,10 +50,10 @@ export default function Certificate() {
                     </div>
                     <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                       <dt className="text-sm font-medium text-slate-500">
-                        Certification ID
+                        Verfication Hash 
                       </dt>
                       <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                        5639
+                        <ShieldCheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
                       </dd>
                     </div>
                     <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -62,14 +64,14 @@ export default function Certificate() {
                         Fri 15 Jan 2021
                       </dd>
                     </div>
-                    <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                    {/* <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                       <dt className="text-sm font-medium text-slate-500">
                         Score
                       </dt>
                       <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
                         7/10
                       </dd>
-                    </div>
+                    </div> */}
                     <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                       <dt className="text-sm font-medium text-slate-500">
                         Comment

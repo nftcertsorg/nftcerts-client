@@ -9,7 +9,7 @@ const certificates = [
     name: 'Solidity Development 101',
     issuer: 'moritzfelipe.eth',
     source:
-      'https://i.imgur.com/v4oEOaG.png',
+      'https://i.imgur.com/2bUPGk7.png',
   }
   // More files...
 ]
