@@ -1,6 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import { ethers } from 'ethers'
+import abi from '../abi.json'
+import tokenAddress from '../tokenAddress.json'
 
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -43,6 +46,23 @@ export default function Create() {
 
   const mintNft = async ({ url }) => {
       console.log('minting');
+      const provider = new ethers.providers.Web3Provider(
+        window.ethereum, "any"
+      )
+      const signer = await provider.getSigner()
+      let userAddr = await signer.getAddress()
+    
+      const NFTCerts = new ethers.Contract(tokenAddress.tokenAddress, abi.abi, signer)
+    
+      const dataObject = {
+        issuer: 'some address',
+        creator: 'some address',
+      }
+      const stringified = JSON.stringify(dataObject)
+      const hashedData = ethers.utils.id(stringified)
+    
+      let tx = await NFTCerts.mint(userAddr, url, hashedData)
+      await tx.wait()
   };
 
   return (
