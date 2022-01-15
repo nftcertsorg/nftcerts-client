@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import Overview from "../components/CertificatesList";
-import SearchBar from "../components/SearchBar";
-import { useAddress } from "../hooks/wallet";
+import Overview from "../../components/CertificatesList";
+import SearchBar from "../../components/SearchBar";
+import { useAddress } from "../../hooks/wallet";
 
 export default function Certificates() {
   const [customAddress, setCustomAddress] = useState(null);
