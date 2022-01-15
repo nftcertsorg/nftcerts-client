@@ -8,6 +8,7 @@ export function useAddress() {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     const signer = provider.getSigner();
     setAddress(await signer.getAddress());
+
   };
 
   useEffect(() => {
