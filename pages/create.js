@@ -109,14 +109,14 @@ export default function Create() {
           type: encrypt("ethereumAddress"),
           identity: encrypt(recipientAddress)
         },
-        issuedOn: Math.round((new Date()).getTime() / 1000),
+        issuedOn: encrypt(Math.round((new Date()).getTime() / 1000)),
         verification: {
           type: encrypt("SignedBadge"),
           creator: encrypt(userAddr)
         },
         badge: {
           type: encrypt("BadgeClass"),
-          id: hashData({name: name, issuer: userAddr}),
+          id: encrypt(hashData({name: name, issuer: userAddr})),
           issuer: {
             id: encrypt(userAddr),
             type: encrypt("ethereumAddress")
