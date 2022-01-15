@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getNfts } from "../utils/api";
 import Link from "next/link";
+import { LockClosedIcon } from "@heroicons/react/solid";
 
 export default function CertificatesList({ address }) {
   const [certificates, setCertificates] = useState([]);
@@ -44,11 +45,15 @@ export default function CertificatesList({ address }) {
           >
             <a>
               <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-green-500 overflow-hidden">
-                <img
-                  src={certificate.metadata.image}
-                  alt=""
-                  className="object-cover pointer-events-none group-hover:opacity-75"
-                />
+                {!certificate.metadata.encryption ? (
+                  <img
+                    src={certificate.metadata.image}
+                    alt=""
+                    className="object-cover pointer-events-none group-hover:opacity-75"
+                  />
+                ) : (
+                  <LockClosedIcon className="text-gray-400" aria-hidden="true" />
+                )}
                 <button
                   type="button"
                   className="absolute inset-0 focus:outline-none"
@@ -58,12 +63,21 @@ export default function CertificatesList({ address }) {
                   </span>
                 </button>
               </div>
-              <p className="mt-2 block text-xl font-medium text-gray-900 truncate pointer-events-none">
-                {certificate.metadata.name}
-              </p>
-              <p className="mt-1 block text-sm font-medium text-gray-400 pointer-events-none">
-                From {certificate.owner_of}
-              </p>
+              {!certificate.metadata.encryption ? (
+                <div>
+                  <p className="mt-2 block text-xl font-medium text-gray-900 truncate pointer-events-none">
+                    {certificate.metadata.name}
+                  </p>
+                  <p className="mt-1 block text-sm font-medium text-gray-400 pointer-events-none">
+                    From {certificate.owner_of}
+                  </p>
+                </div>
+                ) : (
+                  <p className="mt-1 block text-sm font-medium text-gray-400 pointer-events-none">
+                    Encrypted
+                  </p>
+                )}
+
             </a>
           </Link>
         </li>
