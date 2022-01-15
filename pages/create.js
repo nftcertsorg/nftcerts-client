@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { create as ipfsHttpClient } from "ipfs-http-client";
-import { ethers } from 'ethers'
-import abi from '../abi.json'
-import tokenAddress from '../tokenAddress.json'
+import { ethers } from "ethers";
+import abi from "../abi.json";
+import tokenAddress from "../tokenAddress.json";
 
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -14,17 +14,15 @@ export default function Create() {
   const [userAddr, setUserAddr] = useState(null);
 
   useEffect(() => {
-    fetchSigner()
+    fetchSigner();
   }, []);
 
   const fetchSigner = async () => {
-    const provider = new ethers.providers.Web3Provider(
-      window.ethereum, "any"
-    )
-    const _signer = await provider.getSigner()
-    let _userAddr = await _signer.getAddress()
-    setSigner(_signer)
-    setUserAddr(_userAddr)
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const _signer = await provider.getSigner();
+    let _userAddr = await _signer.getAddress();
+    setSigner(_signer);
+    setUserAddr(_userAddr);
   };
 
   const uploadImage = async (e) => {
@@ -41,7 +39,8 @@ export default function Create() {
   };
 
   const onSave = async () => {
-    const { name, description, recipientAddress, workUrl, workDescription } = formInput;
+    const { name, description, recipientAddress, workUrl, workDescription } =
+      formInput;
 
     if (!name || !description || !fileUrl) return;
     /* first, upload to IPFS */
@@ -49,33 +48,31 @@ export default function Create() {
       name,
       description,
       image: fileUrl,
-      openBadge: [
-        {
-          "@context": "https://w3id.org/openbadges/v2",
-          type: "Assertion",
-          recipient: {
+      openBadge: {
+        "@context": "https://w3id.org/openbadges/v2",
+        type: "Assertion",
+        recipient: {
+          type: "ethereumAddress",
+          identity: recipientAddress,
+        },
+        issuedOn: Math.round(new Date().getTime() / 1000),
+        verification: {
+          type: "SignedBadge",
+          creator: userAddr,
+        },
+        badge: {
+          type: "BadgeClass",
+          id: hashData({ name: name, issuer: userAddr }),
+          issuer: {
+            id: userAddr,
             type: "ethereumAddress",
-            identity: recipientAddress
           },
-          issuedOn: Math.round((new Date()).getTime() / 1000),
-          verification: {
-            type: "SignedBadge",
-            creator: userAddr
-          },
-          badge: {
-            type: "BadgeClass",
-            id: hashData({name: name, issuer: userAddr}),
-            issuer: {
-              id: userAddr,
-              type: "ethereumAddress"
-            }
-          },
-          evidence: {
-            id: workUrl,
-            description: workDescription,
-          }
-        }
-      ],
+        },
+        evidence: {
+          id: workUrl,
+          description: workDescription,
+        },
+      },
       encryption: false,
     });
     try {
@@ -89,27 +86,31 @@ export default function Create() {
   };
 
   const hashData = (dataObject) => {
-    const stringified = JSON.stringify(dataObject)
-    const hashedData = ethers.utils.id(stringified)
-    return hashedData
-  }
+    const stringified = JSON.stringify(dataObject);
+    const hashedData = ethers.utils.id(stringified);
+    return hashedData;
+  };
 
   const mintNft = async ({ url, recipientAddress }) => {
-      console.log('minting');
-      // const signer = await provider.getSigner()
-      // let userAddr = await signer.getAddress()
-    
-      const NFTCerts = new ethers.Contract(tokenAddress.tokenAddress, abi.abi, signer)
-    
-      const dataObject = {
-        issuer: 'some address',
-        creator: 'some address',
-      }
-      
-      const hashedData = hashData(dataObject)
+    console.log("minting");
+    // const signer = await provider.getSigner()
+    // let userAddr = await signer.getAddress()
 
-      let tx = await NFTCerts.mint(recipientAddress, url, hashedData)
-      await tx.wait()
+    const NFTCerts = new ethers.Contract(
+      tokenAddress.tokenAddress,
+      abi.abi,
+      signer
+    );
+
+    const dataObject = {
+      issuer: "some address",
+      creator: "some address",
+    };
+
+    const hashedData = hashData(dataObject);
+
+    let tx = await NFTCerts.mint(recipientAddress, url, hashedData);
+    await tx.wait();
   };
 
   return (
@@ -118,18 +119,22 @@ export default function Create() {
         <div className="max-w-lg mx-auto shadow sm:rounded-md sm:overflow-hidden">
           <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
             <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Certificate Data</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Certificate Data
+              </h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Please enter the data you want to store in the certificate, based on the {' '}
-                <a 
-                  className="text-green-600 hover:text-green-800 visited:text-green-600 font-semibold" 
-                  href="https://www.imsglobal.org/sites/default/files/Badges/OBv2p0Final/index.html">
+                Please enter the data you want to store in the certificate,
+                based on the{" "}
+                <a
+                  className="text-green-600 hover:text-green-800 visited:text-green-600 font-semibold"
+                  href="https://www.imsglobal.org/sites/default/files/Badges/OBv2p0Final/index.html"
+                >
                   IMS Open Badges 2.0 Standard
-                </a>.
+                </a>
+                .
               </p>
             </div>
             <div>
-
               <div>
                 <label
                   htmlFor="name"
@@ -146,7 +151,7 @@ export default function Create() {
                       updateFormInput({ ...formInput, name: e.target.value })
                     }
                     className="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="ETH DEV 101"                 
+                    placeholder="ETH DEV 101"
                   />
                 </div>
               </div>
@@ -231,7 +236,7 @@ export default function Create() {
                     Recipient submission link
                   </label>
                   <span className="text-sm text-gray-500" id="email-optional">
-                      Optional
+                    Optional
                   </span>
                 </div>
                 <div className="mt-1">
@@ -314,7 +319,10 @@ export default function Create() {
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label htmlFor="encryptData" className="font-medium text-gray-700">
+                  <label
+                    htmlFor="encryptData"
+                    className="font-medium text-gray-700"
+                  >
                     Encrypt
                   </label>
                   <p id="encryptData-description" className="text-gray-500">
@@ -322,7 +330,6 @@ export default function Create() {
                   </p>
                 </div>
               </div>
-
             </div>
             <div className="px-4 py-3 text-right sm:px-6">
               <button
