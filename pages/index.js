@@ -32,6 +32,36 @@ export default function LandingPage() {
             </div>
           </div>
         </main>
+
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 mt-32">
+          <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden lg:grid lg:grid-cols-2 lg:gap-4">
+            <div className="pt-10 pb-12 px-6 sm:pt-16 sm:px-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
+              <div className="lg:self-center">
+                <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+                  <span className="block">See NFTCerts in action!</span>
+                  <span className="block">Test our example Dapp.</span>
+                </h2>
+                <p className="mt-4 text-lg leading-6 text-indigo-200">
+                  Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
+                  nec.
+                </p>
+                <a
+                  href="#"
+                  className="mt-8 bg-white border border-transparent rounded-md shadow px-5 py-3 inline-flex items-center text-base font-medium text-green-600 hover:bg-green-50"
+                >
+                  Test Demo
+                </a>
+              </div>
+            </div>
+            <div className="-mt-6 aspect-w-5 aspect-h-3 md:aspect-w-2 md:aspect-h-1">
+              <img
+                className="transform translate-x-6 translate-y-6 rounded-md object-cover object-left-top sm:translate-x-16 lg:translate-y-20"
+                src="example-screen.png"
+                alt="App screenshot"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
