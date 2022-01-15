@@ -29,7 +29,6 @@ export default function Certificate() {
                         Awarded to
                       </dt>
                       <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2 flex  flex-col items-start gap-2">
-                        Margot Foster
                         <div className="bg-slate-100 text-slate-400 rounded-full p-0.5 inline-flex items-center ">
                           <img className="inline-block h-5 w-5 rounded-full" src="https://avatar.tobi.sh/0x8DAf30dEa39Fb89c5E039065B7d1973863b38352.svg" alt="0x8DAf30dEa39Fb89c5E039065B7d1973863b38352" />
                           <span className="pl-1 pr-2 text-sm font-medium">0x8D ··· 8352</span>
@@ -41,7 +40,6 @@ export default function Certificate() {
                         Issued by
                       </dt>
                       <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2 flex  flex-col items-start gap-2">
-                        Chain Accademy
                         <div className="bg-slate-100 text-slate-400 rounded-full p-0.5 inline-flex items-center ">
                           <img className="inline-block h-5 w-5 rounded-full" src="https://avatar.tobi.sh/0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E.svg" alt="0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E" />
                           <span className="pl-1 pr-2 text-sm font-medium">chainaccademy.eth</span>
