@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { ethers } from 'ethers'
 import abi from '../abi.json'
@@ -10,6 +10,22 @@ const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 export default function Create() {
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, updateFormInput] = useState({ name: "", description: "" });
+  const [signer, setSigner] = useState(null);
+  const [userAddr, setUserAddr] = useState(null);
+
+  useEffect(() => {
+    fetchSigner()
+  }, []);
+
+  const fetchSigner = async () => {
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum, "any"
+    )
+    const _signer = await provider.getSigner()
+    let _userAddr = await _signer.getAddress()
+    setSigner(_signer)
+    setUserAddr(_userAddr)
+  };
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -25,7 +41,7 @@ export default function Create() {
   };
 
   const onSave = async () => {
-    const { name, description } = formInput;
+    const { name, description, recipientAddress } = formInput;
 
     if (!name || !description || !fileUrl) return;
     /* first, upload to IPFS */
@@ -33,24 +49,51 @@ export default function Create() {
       name,
       description,
       image: fileUrl,
+      openBadge: [
+        {
+          "@context": "https://w3id.org/openbadges/v2",
+          type: "Assertion",
+          recipient: {
+            type: "ethereumAddress",
+            identity: recipientAddress
+          },
+          issuedOn: Math.round((new Date()).getTime() / 1000),
+          verification: {
+            type: "SignedBadge",
+            creator: userAddr
+          },
+          badge: {
+            type: "BadgeClass",
+            id: hashData({name: name, issuer: userAddr}),
+            issuer: {
+              id: userAddr,
+              type: "ethereumAddress"
+            }
+          }
+        }
+      ],
+      encryption: false,
     });
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-      mintNft({ url });
+      mintNft({ url, recipientAddress });
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   };
 
-  const mintNft = async ({ url }) => {
+  const hashData = (dataObject) => {
+    const stringified = JSON.stringify(dataObject)
+    const hashedData = ethers.utils.id(stringified)
+    return hashedData
+  }
+
+  const mintNft = async ({ url, recipientAddress }) => {
       console.log('minting');
-      const provider = new ethers.providers.Web3Provider(
-        window.ethereum, "any"
-      )
-      const signer = await provider.getSigner()
-      let userAddr = await signer.getAddress()
+      // const signer = await provider.getSigner()
+      // let userAddr = await signer.getAddress()
     
       const NFTCerts = new ethers.Contract(tokenAddress.tokenAddress, abi.abi, signer)
     
@@ -58,10 +101,10 @@ export default function Create() {
         issuer: 'some address',
         creator: 'some address',
       }
-      const stringified = JSON.stringify(dataObject)
-      const hashedData = ethers.utils.id(stringified)
-    
-      let tx = await NFTCerts.mint(userAddr, url, hashedData)
+      
+      const hashedData = hashData(dataObject)
+
+      let tx = await NFTCerts.mint(recipientAddress, url, hashedData)
       await tx.wait()
   };
 
@@ -81,23 +124,24 @@ export default function Create() {
             </p>
           </div>
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <div className="mt-1">
-              <input
-                id="name"
-                name="name"
-                onChange={(e) =>
-                  updateFormInput({ ...formInput, name: e.target.value })
-                }
-                className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-              ></input>
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Name
+              </label>
+              <div className="mt-1">
+                <input
+                  id="name"
+                  name="name"
+                  onChange={(e) =>
+                    updateFormInput({ ...formInput, name: e.target.value })
+                  }
+                  className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                ></input>
+              </div>
             </div>
-
             <div>
               <label
                 htmlFor="description"
@@ -121,6 +165,32 @@ export default function Create() {
               </div>
               <p className="mt-2 text-sm text-gray-500">
                 Brief description for your profile. URLs are hyperlinked.
+              </p>
+            </div>
+
+            <div>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Recipient Address
+              </label>
+              <div className="mt-1">
+                <textarea
+                  id="recipientAddress"
+                  name="recipientAddress"
+                  onChange={(e) =>
+                    updateFormInput({
+                      ...formInput,
+                      recipientAddress: e.target.value,
+                    })
+                  }
+                  className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                  placeholder="Recipient address"
+                ></textarea>
+              </div>
+              <p className="mt-2 text-sm text-gray-500">
+                Please enter the ethereum address of the user.
               </p>
             </div>
 
