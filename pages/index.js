@@ -1,8 +1,4 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-
-export default function Example() {
+export default function LandingPage() {
   return (
     <div className="relative bg-gray-50 overflow-hidden">
       <div className="relative pt-6 pb-16 sm:pb-24">
