@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { getNfts, getIpfsMetadata } from "../utils/api";
+import { truncateAddress } from "../utils/utils";
 import Link from "next/link";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
@@ -70,9 +71,18 @@ export default function CertificatesList({ address }) {
                   <p className="mt-2 block text-xl font-medium text-gray-900 truncate pointer-events-none">
                     {certificate.metadata.name}
                   </p>
-                  <p className="mt-1 block text-sm font-medium text-gray-400 pointer-events-none">
-                    From {certificate.owner_of}
-                  </p>
+                  <div className="mt-2 block text-sm font-medium text-gray-400 pointer-events-none">
+                    <span className="bg-slate-100 text-slate-400 rounded-full p-0.5 inline-flex items-center ">
+                    <img
+                      className="inline-block h-5 w-5 rounded-full"
+                      src={`https://avatar.tobi.sh/${certificate.metadata.openBadge.badge.issuer.id}.svg`}
+                      alt="0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E"
+                    />
+                    <span className="pl-1 pr-2 text-sm font-medium">
+                      {truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
+                    </span>
+                  </span>
+                  </div>
                 </div>
                 ) : (
                   <p className="mt-1 block text-sm font-medium text-gray-400 pointer-events-none">
