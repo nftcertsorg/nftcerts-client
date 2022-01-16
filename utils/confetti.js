@@ -1,6 +1,6 @@
 import confetti from "canvas-confetti";
 
-var duration = 8 * 1000;
+var duration = 3 * 1000;
 var end = Date.now() + duration;
 
 export default function frame() {

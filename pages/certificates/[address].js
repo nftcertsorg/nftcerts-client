@@ -1,6 +1,6 @@
 import { ShieldCheckIcon, ShieldExclamationIcon } from "@heroicons/react/solid";
 import { useCallback, useEffect, useState } from "react";
-import { getNft, getIpfsMetadata } from "../../utils/api";
+import {getNft, getIpfsMetadata, getEnsNameFromAddress} from "../../utils/api";
 import { truncateAddress, timeConverter } from "../../utils/utils";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { decrypt, getPublicKey } from "../../utils/encryption";
@@ -13,6 +13,7 @@ function Certificate({ address, id }) {
   const [rawEncryptedData, setRawEncryptedData] = useState(null);
   const [verification, setVerification] = useState(null);
 
+  const [ensName, setEnsName] = useState();
   const getCertificate = useCallback(async () => {
     if (!address || !id) return;
     const nft = await getNft(address, id);
@@ -22,6 +23,12 @@ function Certificate({ address, id }) {
       ...nft,
       metadata,
     });
+
+    const name = await getEnsNameFromAddress(data?.openBadge.badge.issuer.id)
+    if(!name.name){
+      return
+    }
+    setEnsName(name.name)
   }, [address, id]);
 
   const decryptCertificate = (publicKey) => {
@@ -226,9 +233,7 @@ function Certificate({ address, id }) {
                       alt="0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                      {truncateAddress(
-                        certificate.metadata.openBadge.badge.issuer.id
-                      )}
+                      {ensName ? ensName :  truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
                     </span>
                   </div>
                 </dd>
