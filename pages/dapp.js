@@ -4,7 +4,7 @@ import { useState } from "react";
 import frame from "../utils/confetti";
 
 export default function Dapp() {
-  const [failure, setFailure] = useState(false);
+  const [failure, setFailure] = useState(true);
   const [checked, setChecked] = useState(false);
 
   const checkValidNFT = async (nftArr) => {
@@ -12,8 +12,10 @@ export default function Dapp() {
       const metadata = await getIpfsMetadata(nft.token_uri)
       if (
         metadata.openBadge.badge.id ===
-        "0xa15535da2a270672c91caa094518f7940cecadcacaf317a17f5ee58a2fded4ce" // hardcoded certificate id
+        "0x8058ef7d197fcb7cce0bed53befeb725c3a2b3351d99d14a91a2d578e5bbf109" // hardcoded certificate id
       ) {
+        setFailure(false);
+        frame();
         return true;
       }
     }
@@ -25,36 +27,34 @@ export default function Dapp() {
     const _signer = await provider.getSigner();
     let _userAddr = await _signer.getAddress();
     const json = await getNfts(_userAddr);
-    const valid = checkValidNFT(json.result);
+    await checkValidNFT(json.result);
     setChecked(true);
-    if (!valid) {
-      // change this to modify page change
-      setFailure(true);
-    } else {
-      frame();
-    }
   };
 
   return (
     <>
       {!checked && (
-        <div className="w-full px-4 pt-16">
-          <div className="text-center mb-10">
-            <h1 className="text-4xl tracking-tight font-bold text-gray-900 sm:text-5xl md:text-6xl mb-5">
-              <span className="block xl:inline">Enter the dApp!</span>
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              You need to have the correct certificate as an NFT in your wallet
-              to be able to login.
-            </p>
-          </div>
+    <div className="bg-white">
+    <div className="max-w-2xl mx-auto text-center py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+      <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+        <span className="block">Ready to hack?</span>
+        <span className="block">Participate in our Ethereum Hackathon.</span>
+      </h2>
+      <p className="mt-4 text-lg leading-6 text-gray-400">
+          In order to particpate you will need to have absolvet the Blockchain fundamentals course and have a NFT certificate as proof in your wallet.
+      </p>
+      <div className="mt-8 flex justify-center">
+        <div className="inline-flex rounded-md shadow">
           <button
             onClick={getNFTs}
-            className="background-nftcerts-primary w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white hover:bg-green-700 md:py-4 md:text-lg md:px-10"
+            className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white background-nftcerts-primary hover:bg-green-700"
           >
             Check for qualification
           </button>
         </div>
+      </div>
+    </div>
+  </div>
       )}
       {checked &&
         (failure ? (
@@ -62,13 +62,12 @@ export default function Dapp() {
             <div className="text-center">
               <h1 className="text-4xl tracking-tight font-bold text-gray-900 sm:text-5xl md:text-6xl mb-5">
                 <span className="block xl:inline">
-                  You do not qualify to access the dApp :(
+                  You do not qualify to access the hackathon
                 </span>
               </h1>
               <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
                 We were not able to find the correct certificate in your wallet
-                to access the dApp. Please obtain the certificate from your
-                institution.
+                to access the hackathon. Please obtain the certificate from your the Blockchain fundamentals course.
               </p>
             </div>
           </div>
@@ -76,10 +75,10 @@ export default function Dapp() {
           <div className="w-full px-4 pt-16">
             <div className="text-center">
               <h1 className="text-4xl tracking-tight font-bold text-gray-900 sm:text-5xl md:text-6xl mb-5">
-                <span className="block xl:inline">Welcome to the dApp!</span>
+                <span className="block xl:inline">Welcome to the hackathon!</span>
               </h1>
               <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                We were able to find the required certificate in your wallet!
+                We were able to find the required certificate in your wallet, we will send you an email with the instructions!
               </p>
             </div>
           </div>

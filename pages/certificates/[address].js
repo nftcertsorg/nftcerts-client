@@ -2,20 +2,18 @@ import { ShieldCheckIcon } from "@heroicons/react/solid";
 import { useCallback, useEffect, useState } from "react";
 import {getNft, getIpfsMetadata, getEnsNameFromAddress} from "../../utils/api";
 import { truncateAddress, timeConverter } from "../../utils/utils";
-import {useEnsAddress} from "../../hooks/ens";
-
+import { LockClosedIcon } from "@heroicons/react/solid";
+import { decrypt, getPublicKey } from "../../utils/encryption";
 
 function Certificate({ address, id }) {
-  const [certificate, setCertificate] = useState();
+  const [certificate, setCertificate] = useState(null);
+  const [error, setError] = useState(null);
   const [ensName, setEnsName] = useState();
-
-
-
   const getCertificate = useCallback(async () => {
     if (!address || !id) return;
     const nft = await getNft(address, id);
-    const data = await getIpfsMetadata(nft.token_uri)
-    console.log(data)
+    const data = await getIpfsMetadata(nft.token_uri);
+    console.log(data);
     const metadata = data ? data : {};
     setCertificate({
       ...data,
@@ -30,11 +28,125 @@ function Certificate({ address, id }) {
     console.log({name})
   }, [address, id]);
 
+  const decryptCertificate = (publicKey) => {
+    if (!certificate?.metadata?.encryption || !publicKey) return;
+
+    const encryptedMetadata = certificate.metadata;
+    const decryptedMetadata = {
+      name: decrypt(encryptedMetadata["name"], publicKey),
+      description: decrypt(encryptedMetadata["description"], publicKey),
+      image: decrypt(encryptedMetadata["image"], publicKey),
+      openBadge: {
+        "@context": decrypt(
+          encryptedMetadata["openBadge"]["@context"],
+          publicKey
+        ),
+        type: decrypt(encryptedMetadata["openBadge"]["type"], publicKey),
+        recipient: {
+          type: decrypt(
+            encryptedMetadata["openBadge"]["recipient"]["type"],
+            publicKey
+          ),
+          identity: decrypt(
+            encryptedMetadata["openBadge"]["recipient"]["identity"],
+            publicKey
+          ),
+        },
+        issuedOn: decrypt(
+          encryptedMetadata["openBadge"]["issuedOn"],
+          publicKey
+        ),
+        verification: {
+          type: decrypt(
+            encryptedMetadata["openBadge"]["verification"]["type"],
+            publicKey
+          ),
+          creator: decrypt(
+            encryptedMetadata["openBadge"]["verification"]["creator"],
+            publicKey
+          ),
+        },
+        badge: {
+          type: decrypt(
+            encryptedMetadata["openBadge"]["badge"]["type"],
+            publicKey
+          ),
+          id: decrypt(encryptedMetadata["openBadge"]["badge"]["id"], publicKey),
+          issuer: {
+            id: decrypt(
+              encryptedMetadata["openBadge"]["badge"]["issuer"]["id"],
+              publicKey
+            ),
+            type: decrypt(
+              encryptedMetadata["openBadge"]["badge"]["issuer"]["type"],
+              publicKey
+            ),
+          },
+        },
+        evidence: {
+          id: decrypt(
+            encryptedMetadata["openBadge"]["evidence"]["id"],
+            publicKey
+          ),
+          description: decrypt(
+            encryptedMetadata["openBadge"]["evidence"]["description"],
+            publicKey
+          ),
+        },
+      },
+      encryption: false,
+    };
+    setCertificate({
+      ...certificate,
+      metadata: decryptedMetadata,
+    });
+  };
+
   useEffect(() => {
     getCertificate();
   }, [getCertificate]);
 
   if (!certificate) return null;
+
+  const handleDecryption = async () => {
+    const publicKey = await getPublicKey();
+    try {
+      decryptCertificate(publicKey);
+    } catch (_e) {
+      setError("Invalid Public Key");
+    }
+  };
+
+  console.log(certificate);
+
+  if (certificate?.metadata?.encryption)
+    return (
+      <div className="w-full h-[80vh] flex flex-col items-center justify-center">
+        <div className="flex flex-col space-y-5">
+          <div className="flex justify-center">
+            <LockClosedIcon className="text-gray-400 w-64" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              This certificate is encrypted use your public key to decrypt it
+            </p>
+          </div>
+          <div className="text-center">
+            <button
+              onClick={handleDecryption}
+              type="submit"
+              disabled={!!error}
+              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-60 disabled:bg-gray-400 disabled:text-gray-700"
+            >
+              Decrypt
+            </button>
+            {error && (
+              <p className="mt-1 max-w-2xl text-sm text-red-500">{error}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
 
   return (
     <div className=" min-h-screen flex flex-col lg:flex-row w-full ">
@@ -81,7 +193,9 @@ function Certificate({ address, id }) {
                       alt="0x8DAf30dEa39Fb89c5E039065B7d1973863b38352"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                    {  truncateAddress(certificate.metadata.openBadge.recipient.identity)}
+                      {truncateAddress(
+                        certificate.metadata.openBadge.recipient.identity
+                      )}
                     </span>
                   </div>
                 </dd>
@@ -117,7 +231,7 @@ function Certificate({ address, id }) {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm font-medium text-slate-500">Date</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                {timeConverter(certificate.metadata.openBadge.issuedOn)}
+                  {timeConverter(certificate.metadata.openBadge.issuedOn)}
                 </dd>
               </div>
               {/* <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -185,7 +299,7 @@ export async function getStaticProps({ params }) {
   const rawAddress = params.address;
 
   const [address, id] = rawAddress.split("--");
-  
+
   return {
     props: {
       address,
