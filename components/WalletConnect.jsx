@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import {useEnsAddress, useEnsName} from "../hooks/ens";
-
-import { useEnsLookup } from 'wagmi'
 
 const providerOptions = {
   /* See Provider Options Section */
@@ -13,10 +10,6 @@ let web3Modal = null;
 
 export default function WalletConnect() {
   const [address, setAddress] = useState('');
-  // console.log("ENS address " , useEnsName("moritzfelipe.eth"))
-   const name = useEnsAddress("0xd8da6bf26964af9d7eed9e03e53415d37aa96045")
-
-  console.log("ENS name from address ", name)
 
   const initWeb3 = () => {
     if (typeof window !== "undefined") {
@@ -26,7 +19,6 @@ export default function WalletConnect() {
         providerOptions, // required
       });
     }
-
   };
 
   const connect = async () => {
@@ -34,21 +26,13 @@ export default function WalletConnect() {
       await web3Modal.connect()
     );
     const signer = provider.getSigner();
-    const address = await signer.getAddress()
-    setAddress(address);
-
-
-
+    setAddress(await signer.getAddress());
   };
 
   useEffect(() => {
     initWeb3();
     if (web3Modal && web3Modal.cachedProvider) {
       connect();
-
-
-
-
     }
   }, []);
 
