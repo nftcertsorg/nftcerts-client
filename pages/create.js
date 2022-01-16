@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { ethers } from "ethers";
+import { encrypt, decrypt, getAddressFromPublicKey, getPublicKey } from '../utils/encryption'
 import abi from "../abi.json";
 import tokenAddress from "../tokenAddress.json";
 
@@ -9,7 +10,7 @@ const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 export default function Create() {
   const [fileUrl, setFileUrl] = useState(null);
-  const [formInput, updateFormInput] = useState({ name: "", description: "" });
+  const [formInput, updateFormInput] = useState({ name: "", description: "", encrypted: false });
   const [signer, setSigner] = useState(null);
   const [userAddr, setUserAddr] = useState(null);
 
@@ -39,12 +40,14 @@ export default function Create() {
   };
 
   const onSave = async () => {
-    const { name, description, recipientAddress, workUrl, workDescription } =
+    const { name, description, recipientPublicKey, workUrl, workDescription, encrypted } =
       formInput;
+
+    const recipientAddress = getAddressFromPublicKey(recipientPublicKey)
 
     if (!name || !description || !fileUrl) return;
     /* first, upload to IPFS */
-    const data = JSON.stringify({
+    const certificateDataRaw = {
       name,
       description,
       image: fileUrl,
@@ -74,12 +77,79 @@ export default function Create() {
         },
       },
       encryption: false,
-    });
+    }
+
+    const certificateDataEncrypted = {
+      name: encrypt(name, recipientPublicKey),
+      description: encrypt(description, recipientPublicKey),
+      image: encrypt(fileUrl, recipientPublicKey),
+      openBadge: {
+        "@context": encrypt("https://w3id.org/openbadges/v2", recipientPublicKey),
+        type: encrypt("Assertion", recipientPublicKey),
+        recipient: {
+          type: encrypt("ethereumAddress", recipientPublicKey),
+          identity: encrypt(recipientAddress, recipientPublicKey),
+        },
+        issuedOn: encrypt((Math.round(new Date().getTime() / 1000)).toString(), recipientPublicKey),
+        verification: {
+          type: encrypt("SignedBadge", recipientPublicKey),
+          creator: encrypt(userAddr, recipientPublicKey),
+        },
+        badge: {
+          type: encrypt("BadgeClass", recipientPublicKey),
+          id: encrypt(hashData({ name: name, issuer: userAddr }).toString(), recipientPublicKey),
+          issuer: {
+            id: encrypt(userAddr, recipientPublicKey),
+            type: encrypt("ethereumAddress", recipientPublicKey),
+          },
+        },
+        evidence: {
+          id: encrypt(workUrl, recipientPublicKey),
+          description: encrypt(workDescription, recipientPublicKey),
+        },
+      },
+      encryption: true,
+    }
+
+    const certificateDataDecrypted = {
+      name: decrypt(certificateDataEncrypted['name'], recipientPublicKey),
+      description: decrypt(certificateDataEncrypted['description'], recipientPublicKey),
+      image: decrypt(certificateDataEncrypted['image'], recipientPublicKey),
+      openBadge: {
+        "@context": decrypt(certificateDataEncrypted['openBadge']['@context'], recipientPublicKey),
+        type: decrypt(certificateDataEncrypted['openBadge']['type'], recipientPublicKey),
+        recipient: {
+          type: decrypt(certificateDataEncrypted['openBadge']['recipient']['type'], recipientPublicKey),
+          identity: decrypt(certificateDataEncrypted['openBadge']['recipient']['identity'], recipientPublicKey),
+        },
+        issuedOn: decrypt(certificateDataEncrypted['openBadge']['issuedOn'], recipientPublicKey),
+        verification: {
+          type: decrypt(certificateDataEncrypted['openBadge']['verification']['type'], recipientPublicKey),
+          creator: decrypt(certificateDataEncrypted['openBadge']['verification']['creator'], recipientPublicKey),
+        },
+        badge: {
+          type: decrypt(certificateDataEncrypted['openBadge']['badge']['type'], recipientPublicKey),
+          id: decrypt(certificateDataEncrypted['openBadge']['badge']['id'], recipientPublicKey),
+          issuer: {
+            id: decrypt(certificateDataEncrypted['openBadge']['badge']['issuer']['id'], recipientPublicKey),
+            type: decrypt(certificateDataEncrypted['openBadge']['badge']['issuer']['type'], recipientPublicKey),
+          },
+        },
+        evidence: {
+          id: decrypt(certificateDataEncrypted['openBadge']['evidence']['id'], recipientPublicKey),
+          description: decrypt(certificateDataEncrypted['openBadge']['evidence']['description'], recipientPublicKey),
+        },
+      },
+      encryption: false,
+    }
+
+    let certificateData;
+    encrypted ? certificateData = JSON.stringify(certificateDataEncrypted) : certificateData = JSON.stringify(certificateDataRaw);
     try {
-      const added = await client.add(data);
+      const added = await client.add(certificateData);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-      mintNft({ url, recipientAddress });
+      mintNft({ url, recipientAddress, certificateData });
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -87,27 +157,17 @@ export default function Create() {
 
   const hashData = (dataObject) => {
     const stringified = JSON.stringify(dataObject);
-    const hashedData = ethers.utils.id(stringified);
-    return hashedData;
+    return ethers.utils.id(stringified);
   };
 
-  const mintNft = async ({ url, recipientAddress }) => {
-    console.log("minting");
-    // const signer = await provider.getSigner()
-    // let userAddr = await signer.getAddress()
-
+  const mintNft = async ({ url, recipientAddress, certificateData }) => {
     const NFTCerts = new ethers.Contract(
       tokenAddress.tokenAddress,
       abi.abi,
       signer
     );
 
-    const dataObject = {
-      issuer: "some address",
-      creator: "some address",
-    };
-
-    const hashedData = hashData(dataObject);
+    const hashedData = hashData(certificateData);
 
     let tx = await NFTCerts.mint(recipientAddress, url, hashedData);
     await tx.wait();
@@ -289,21 +349,21 @@ export default function Create() {
                   htmlFor="description"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Recipient Address
+                  Recipient Public Key
                 </label>
                 <div className="mt-1">
                   <input
-                    id="recipientAddress"
-                    name="recipientAddress"
+                    id="recipientPublicKey"
+                    name="recipientPublicKey"
                     type="text"
                     onChange={(e) =>
                       updateFormInput({
                         ...formInput,
-                        recipientAddress: e.target.value,
+                        recipientPublicKey: e.target.value,
                       })
                     }
                     className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                    placeholder="Recipient address"
+                    placeholder="Recipient Public Key"
                   ></input>
                 </div>
               </div>
@@ -316,6 +376,12 @@ export default function Create() {
                     name="encryptData"
                     type="checkbox"
                     className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
+                    onChange={(e) =>
+                      updateFormInput({
+                        ...formInput,
+                        encrypted: !formInput.encrypted
+                      })
+                    }
                   />
                 </div>
                 <div className="ml-3 text-sm">
