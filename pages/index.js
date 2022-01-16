@@ -42,8 +42,7 @@ export default function LandingPage() {
                   <span className="block">Test our example Dapp.</span>
                 </h2>
                 <p className="mt-4 text-lg leading-6 text-green-200">
-                  Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
-                  nec.
+                  In this example the particpate of a hackathon first needs to do a course and display the proof of successfully finishing the course with an NFT certificate.
                 </p>
                 <a
                   href="dapp"
