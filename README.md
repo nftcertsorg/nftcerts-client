@@ -111,7 +111,7 @@ Openzeppellin
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-<h2 id="credits"> :man_technologist: Installation</h2>
+<h2 id="credits"> :gear: Installation</h2>
 Run this command to install the project depencies:
 
 ```
