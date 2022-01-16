@@ -112,7 +112,14 @@ Openzeppellin
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 <h2 id="credits"> :man_technologist: Installation</h2>
+Run this command to install the project depencies:
 
+```
+yarn install
+```
 
-
-
+Run the following command to run the development server:
+```
+yarn dev
+```
+Open http://localhost:3000 with your browser to see the result.
