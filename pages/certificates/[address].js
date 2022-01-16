@@ -1,11 +1,15 @@
 import { ShieldCheckIcon } from "@heroicons/react/solid";
 import { useCallback, useEffect, useState } from "react";
-import { getNft, getIpfsMetadata } from "../../utils/api";
+import {getNft, getIpfsMetadata, getEnsNameFromAddress} from "../../utils/api";
 import { truncateAddress, timeConverter } from "../../utils/utils";
+import {useEnsAddress} from "../../hooks/ens";
 
 
 function Certificate({ address, id }) {
   const [certificate, setCertificate] = useState();
+  const [ensName, setEnsName] = useState();
+
+
 
   const getCertificate = useCallback(async () => {
     if (!address || !id) return;
@@ -17,6 +21,13 @@ function Certificate({ address, id }) {
       ...data,
       metadata,
     });
+
+    const name = await getEnsNameFromAddress(data?.openBadge.badge.issuer.id)
+    if(!name.name){
+      return
+    }
+    setEnsName(name.name)
+    console.log({name})
   }, [address, id]);
 
   useEffect(() => {
@@ -70,7 +81,7 @@ function Certificate({ address, id }) {
                       alt="0x8DAf30dEa39Fb89c5E039065B7d1973863b38352"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                      {truncateAddress(certificate.metadata.openBadge.recipient.identity)}
+                    {  truncateAddress(certificate.metadata.openBadge.recipient.identity)}
                     </span>
                   </div>
                 </dd>
@@ -87,7 +98,7 @@ function Certificate({ address, id }) {
                       alt="0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                      {truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
+                      {ensName ? ensName :  truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
                     </span>
                   </div>
                 </dd>
