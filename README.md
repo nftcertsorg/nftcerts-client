@@ -1,4 +1,17 @@
 
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+<h2 id="credits"> :link: Project Links</h2>
+<ul>
+<li><a target="_blank" href="https://nftcerts.netlify.app/">Live Project</a> </li>
+<li><a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">NFTHack 2022 Public URL </a></li>
+<li><a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat">Smart Contract Github Repo</a></li>
+</ul>
+
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+
 <h1 align="center"> :scroll: NFT Certs </h1>
 <h3 align="center"> Education Certificates as NFTs</h3>
 
@@ -81,14 +94,4 @@ Openzeppellin
 
 <h2 id="credits"> :chains: Network Deployed</h2>
 <p>The project was deployed on Polygon via the Mumbai Testnet</p>
-
-
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
-<h2 id="credits"> :link: Project Links</h2>
-<ul>
-<li><a target="_blank" href="https://nftcerts.netlify.app/">Live Project URL</a> </li>
-<li><a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">NFTHack 2022 Public URL </a></li>
-<li><a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat">Smart Contract Github URL</a></li>
-</ul>
 
