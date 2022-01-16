@@ -69,7 +69,7 @@ Our contracts store a hash of the meta data to be sure the metadata that is disp
 <ul>
 
 <li>
-Solidty
+Solidity
 </li>
 
 <li>
