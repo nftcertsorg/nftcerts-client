@@ -108,3 +108,11 @@ Openzeppellin
 <h2 id="credits"> :chains: Network Deployed</h2>
 <p>The project was deployed on Polygon via the Mumbai Testnet</p>
 
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+<h2 id="credits"> :man_technologist: Installation</h2>
+
+
+
+
