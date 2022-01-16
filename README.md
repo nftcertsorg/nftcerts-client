@@ -1,7 +1,9 @@
 
 
 <img src="readme/logo.svg" alt="Animated gif pacman game" height="382px">
- <p align="center"> Make it easy to create and verify educational certificates as NFTs.</p>
+ <p align="center"> Make it easy to create and verify educational certificates as NFTs.
+We believe that in the future our digital identity will consist of token assets stored in web3 accounts. In this future we will need to provide a “proof of skill” in our assets to fluently cooperate with others.
+</p>
 
 
 <h2 id="credits"> :link: Project Links</h2>
@@ -12,19 +14,26 @@
 </ul>
 
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+[//]: # (![-----------------------------------------------------]&#40;https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png&#41;)
 
+[//]: # ()
+[//]: # ()
+[//]: # ()
+[//]: # (<h3 align="center"> Education Certificates as NFTs</h3>)
 
+[//]: # ()
+[//]: # (<p align="center"> )
 
-<h3 align="center"> Education Certificates as NFTs</h3>
+[//]: # (<img src="readme/readme.png" alt="Animated gif pacman game" height="382px">)
 
-<p align="center"> 
-<img src="readme/readme.png" alt="Animated gif pacman game" height="382px">
-</p>
+[//]: # (</p>)
 
-<p>
-We believe that in the future our digital identity will consist of token assets stored in web3 accounts. In this future we will need to provide a “proof of skill” in our assets to fluently cooperate with others.
-</p>
+[//]: # ()
+[//]: # (<p>)
+
+[//]: # (We believe that in the future our digital identity will consist of token assets stored in web3 accounts. In this future we will need to provide a “proof of skill” in our assets to fluently cooperate with others.)
+
+[//]: # (</p>)
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
