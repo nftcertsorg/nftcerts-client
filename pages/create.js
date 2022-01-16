@@ -40,10 +40,10 @@ export default function Create() {
   };
 
   const onSave = async () => {
-    const { name, description, recipientPublicKey, workUrl, workDescription, encrypted } =
+    const { name, description, recipientPublicKey, recipientAddress, workUrl, workDescription, encrypted } =
       formInput;
 
-    const recipientAddress = getAddressFromPublicKey(recipientPublicKey)
+    // const recipientAddress = getAddressFromPublicKey(recipientPublicKey)
 
     if (!name || !description || !fileUrl) return;
     /* first, upload to IPFS */
@@ -79,68 +79,73 @@ export default function Create() {
       encryption: false,
     }
 
-    const certificateDataEncrypted = {
-      name: encrypt(name, recipientPublicKey),
-      description: encrypt(description, recipientPublicKey),
-      image: encrypt(fileUrl, recipientPublicKey),
-      openBadge: {
-        "@context": encrypt("https://w3id.org/openbadges/v2", recipientPublicKey),
-        type: encrypt("Assertion", recipientPublicKey),
-        recipient: {
-          type: encrypt("ethereumAddress", recipientPublicKey),
-          identity: encrypt(recipientAddress, recipientPublicKey),
-        },
-        issuedOn: encrypt((Math.round(new Date().getTime() / 1000)).toString(), recipientPublicKey),
-        verification: {
-          type: encrypt("SignedBadge", recipientPublicKey),
-          creator: encrypt(userAddr, recipientPublicKey),
-        },
-        badge: {
-          type: encrypt("BadgeClass", recipientPublicKey),
-          id: encrypt(hashData({ name: name, issuer: userAddr }).toString(), recipientPublicKey),
-          issuer: {
-            id: encrypt(userAddr, recipientPublicKey),
-            type: encrypt("ethereumAddress", recipientPublicKey),
-          },
-        },
-        evidence: {
-          id: encrypt(workUrl, recipientPublicKey),
-          description: encrypt(workDescription, recipientPublicKey),
-        },
-      },
-      encryption: true,
-    }
+    const certificateDataEncrypted = {};
+    const certificateDataDecrypted = {};
 
-    const certificateDataDecrypted = {
-      name: decrypt(certificateDataEncrypted['name'], recipientPublicKey),
-      description: decrypt(certificateDataEncrypted['description'], recipientPublicKey),
-      image: decrypt(certificateDataEncrypted['image'], recipientPublicKey),
-      openBadge: {
-        "@context": decrypt(certificateDataEncrypted['openBadge']['@context'], recipientPublicKey),
-        type: decrypt(certificateDataEncrypted['openBadge']['type'], recipientPublicKey),
-        recipient: {
-          type: decrypt(certificateDataEncrypted['openBadge']['recipient']['type'], recipientPublicKey),
-          identity: decrypt(certificateDataEncrypted['openBadge']['recipient']['identity'], recipientPublicKey),
-        },
-        issuedOn: decrypt(certificateDataEncrypted['openBadge']['issuedOn'], recipientPublicKey),
-        verification: {
-          type: decrypt(certificateDataEncrypted['openBadge']['verification']['type'], recipientPublicKey),
-          creator: decrypt(certificateDataEncrypted['openBadge']['verification']['creator'], recipientPublicKey),
-        },
-        badge: {
-          type: decrypt(certificateDataEncrypted['openBadge']['badge']['type'], recipientPublicKey),
-          id: decrypt(certificateDataEncrypted['openBadge']['badge']['id'], recipientPublicKey),
-          issuer: {
-            id: decrypt(certificateDataEncrypted['openBadge']['badge']['issuer']['id'], recipientPublicKey),
-            type: decrypt(certificateDataEncrypted['openBadge']['badge']['issuer']['type'], recipientPublicKey),
+    if (encrypted) {
+      certificateDataEncrypted = {
+        name: encrypt(name, recipientPublicKey),
+        description: encrypt(description, recipientPublicKey),
+        image: encrypt(fileUrl, recipientPublicKey),
+        openBadge: {
+          "@context": encrypt("https://w3id.org/openbadges/v2", recipientPublicKey),
+          type: encrypt("Assertion", recipientPublicKey),
+          recipient: {
+            type: encrypt("ethereumAddress", recipientPublicKey),
+            identity: encrypt(recipientAddress, recipientPublicKey),
+          },
+          issuedOn: encrypt((Math.round(new Date().getTime() / 1000)).toString(), recipientPublicKey),
+          verification: {
+            type: encrypt("SignedBadge", recipientPublicKey),
+            creator: encrypt(userAddr, recipientPublicKey),
+          },
+          badge: {
+            type: encrypt("BadgeClass", recipientPublicKey),
+            id: encrypt(hashData({ name: name, issuer: userAddr }).toString(), recipientPublicKey),
+            issuer: {
+              id: encrypt(userAddr, recipientPublicKey),
+              type: encrypt("ethereumAddress", recipientPublicKey),
+            },
+          },
+          evidence: {
+            id: encrypt(workUrl, recipientPublicKey),
+            description: encrypt(workDescription, recipientPublicKey),
           },
         },
-        evidence: {
-          id: decrypt(certificateDataEncrypted['openBadge']['evidence']['id'], recipientPublicKey),
-          description: decrypt(certificateDataEncrypted['openBadge']['evidence']['description'], recipientPublicKey),
+        encryption: true,
+      }
+  
+      certificateDataDecrypted = {
+        name: decrypt(certificateDataEncrypted['name'], recipientPublicKey),
+        description: decrypt(certificateDataEncrypted['description'], recipientPublicKey),
+        image: decrypt(certificateDataEncrypted['image'], recipientPublicKey),
+        openBadge: {
+          "@context": decrypt(certificateDataEncrypted['openBadge']['@context'], recipientPublicKey),
+          type: decrypt(certificateDataEncrypted['openBadge']['type'], recipientPublicKey),
+          recipient: {
+            type: decrypt(certificateDataEncrypted['openBadge']['recipient']['type'], recipientPublicKey),
+            identity: decrypt(certificateDataEncrypted['openBadge']['recipient']['identity'], recipientPublicKey),
+          },
+          issuedOn: decrypt(certificateDataEncrypted['openBadge']['issuedOn'], recipientPublicKey),
+          verification: {
+            type: decrypt(certificateDataEncrypted['openBadge']['verification']['type'], recipientPublicKey),
+            creator: decrypt(certificateDataEncrypted['openBadge']['verification']['creator'], recipientPublicKey),
+          },
+          badge: {
+            type: decrypt(certificateDataEncrypted['openBadge']['badge']['type'], recipientPublicKey),
+            id: decrypt(certificateDataEncrypted['openBadge']['badge']['id'], recipientPublicKey),
+            issuer: {
+              id: decrypt(certificateDataEncrypted['openBadge']['badge']['issuer']['id'], recipientPublicKey),
+              type: decrypt(certificateDataEncrypted['openBadge']['badge']['issuer']['type'], recipientPublicKey),
+            },
+          },
+          evidence: {
+            id: decrypt(certificateDataEncrypted['openBadge']['evidence']['id'], recipientPublicKey),
+            description: decrypt(certificateDataEncrypted['openBadge']['evidence']['description'], recipientPublicKey),
+          },
         },
-      },
-      encryption: false,
+        encryption: false,
+      }
     }
 
     let certificateData;
@@ -349,17 +354,17 @@ export default function Create() {
                   htmlFor="description"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Recipient Public Key
+                  Recipient Address
                 </label>
                 <div className="mt-1">
                   <input
-                    id="recipientPublicKey"
-                    name="recipientPublicKey"
+                    id="recipientAddress"
+                    name="recipientAddress"
                     type="text"
                     onChange={(e) =>
                       updateFormInput({
                         ...formInput,
-                        recipientPublicKey: e.target.value,
+                        recipientAddress: e.target.value,
                       })
                     }
                     className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
@@ -396,6 +401,33 @@ export default function Create() {
                   </p>
                 </div>
               </div>
+              {formInput.encrypted ? (
+              <div className="mt-6">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Recipient Public Key for Encryption
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="recipientPublicKey"
+                    name="recipientPublicKey"
+                    type="text"
+                    onChange={(e) =>
+                      updateFormInput({
+                        ...formInput,
+                        recipientPublicKey: e.target.value,
+                      })
+                    }
+                    className="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    placeholder="Recipient Address"
+                  ></input>
+                </div>
+              </div>
+              ) : (
+                <span></span>
+              )}
             </div>
             <div className="px-4 py-3 text-right sm:px-6">
               <button
