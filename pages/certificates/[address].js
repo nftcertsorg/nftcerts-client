@@ -1,14 +1,18 @@
 import { ShieldCheckIcon } from "@heroicons/react/solid";
 import { useCallback, useEffect, useState } from "react";
-import { getNft } from "../../utils/api";
+import { getNft, getIpfsMetadata } from "../../utils/api";
+import { truncateAddress, timeConverter } from "../../utils/utils";
+
 
 function Certificate({ address, id }) {
   const [certificate, setCertificate] = useState();
 
   const getCertificate = useCallback(async () => {
     if (!address || !id) return;
-    const data = await getNft(address, id);
-    const metadata = data.metadata ? JSON.parse(data.metadata) : {};
+    const nft = await getNft(address, id);
+    const data = await getIpfsMetadata(nft.token_uri)
+    console.log(data)
+    const metadata = data ? data : {};
     setCertificate({
       ...data,
       metadata,
@@ -44,7 +48,7 @@ function Certificate({ address, id }) {
                 fill="currentColor"
               />
             </svg>
-            <span className="pl-1 pr-2 text-sm font-semibold">Nftcerts</span>
+            <span className="pl-1 pr-2 text-sm font-semibold">NFTCerts</span>
           </div>
           <h1 className="text-2xl font-bold leading-7 text-slate-900 sm:text-3xl mt-4">
             {certificate.metadata.name}
@@ -62,11 +66,11 @@ function Certificate({ address, id }) {
                   <div className="bg-slate-100 text-slate-400 rounded-full p-0.5 inline-flex items-center ">
                     <img
                       className="inline-block h-5 w-5 rounded-full"
-                      src="https://avatar.tobi.sh/0x8DAf30dEa39Fb89c5E039065B7d1973863b38352.svg"
+                      src={`https://avatar.tobi.sh/${certificate.metadata.openBadge.recipient.identity}.svg`}
                       alt="0x8DAf30dEa39Fb89c5E039065B7d1973863b38352"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                      0x8D ··· 8352
+                      {truncateAddress(certificate.metadata.openBadge.recipient.identity)}
                     </span>
                   </div>
                 </dd>
@@ -79,11 +83,11 @@ function Certificate({ address, id }) {
                   <div className="bg-slate-100 text-slate-400 rounded-full p-0.5 inline-flex items-center ">
                     <img
                       className="inline-block h-5 w-5 rounded-full"
-                      src="https://avatar.tobi.sh/0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E.svg"
+                      src={`https://avatar.tobi.sh/${certificate.metadata.openBadge.badge.issuer.id}.svg`}
                       alt="0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                      chainaccademy.eth
+                      {truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
                     </span>
                   </div>
                 </dd>
@@ -102,7 +106,7 @@ function Certificate({ address, id }) {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm font-medium text-slate-500">Date</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  Fri 15 Jan 2021
+                {timeConverter(certificate.metadata.openBadge.issuedOn)}
                 </dd>
               </div>
               {/* <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -116,11 +120,7 @@ function Certificate({ address, id }) {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm font-medium text-slate-500">Comment</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
-                  incididunt cillum culpa consequat. Excepteur qui ipsum aliquip
-                  consequat sint. Sit id mollit nulla mollit nostrud in ea
-                  officia proident. Irure nostrud pariatur mollit ad adipisicing
-                  reprehenderit deserunt qui eu.
+                  {certificate.metadata.openBadge.evidence.description}
                 </dd>
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -147,12 +147,12 @@ function Certificate({ address, id }) {
                           />
                         </svg>
                         <span className="ml-2 flex-1 w-0 truncate">
-                          https://github.com/loremipsum/dolorsit
+                          {certificate.metadata.openBadge.evidence.id}
                         </span>
                       </div>
                       <div className="ml-4 flex-shrink-0">
                         <a
-                          href="#"
+                          href={certificate.metadata.openBadge.evidence.id}
                           className="font-medium text-nftcerts-primary hover:text-green-500"
                         >
                           Open
