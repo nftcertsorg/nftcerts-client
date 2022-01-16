@@ -1,7 +1,6 @@
 
 
 <img src="readme/logo.svg" alt="Animated gif pacman game" height="382px">
-<h1 align="center"> :scroll: NFT Certs </h1>
  <p align="center"> Make it easy to create and verify educational certificates as NFTs.</p>
 
 
