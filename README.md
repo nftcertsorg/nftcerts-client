@@ -85,10 +85,10 @@ Openzeppellin
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-<h2 id="credits"> :chains: Project Links</h2>
+<h2 id="credits"> :link: Project Links</h2>
 <ul>
-<li>Live Project URL : <a target="_blank" href="https://nftcerts.netlify.app/">Click Me</a> </li>
-<li>NFTHack 2022 Public URL :  <a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">Click Me</a></li>
-<li>Smart Contract Github URL : <a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat">Click Me</a></li>
+<li><a target="_blank" href="https://nftcerts.netlify.app/">Live Project URL</a> </li>
+<li><a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">NFTHack 2022 Public URL </a></li>
+<li><a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat">Smart Contract Github URL</a></li>
 </ul>
 
