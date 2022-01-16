@@ -5,7 +5,7 @@
 <h3 align="center"> Education Certificates as NFTs</h3>
 
 <p align="center"> 
-<img src="gif/spam detector.gif" alt="Animated gif pacman game" height="382px">
+<img src="readme/readme.png" alt="Animated gif pacman game" height="382px">
 </p>
 
 <p>
@@ -19,7 +19,7 @@ We believe that in the future our digital identity will consist of token assets 
 <p>
 Our educational certificate NFTs store their data based on one of the most recognised certification standards. The Open Badges standard by the IMS.
 </p>
-<img src="image/1.png" alt="Formula 1" style="max-width:100%;"></p>
+<img src="readme/readme2.png" alt="Formula 1" style="max-width:100%;"></p>
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
