@@ -1,6 +1,4 @@
-<p align="center"> 
-  <img src="image/Email Logo.png" alt="Email Logo.png" width="80px" height="80px">
-</p>
+
 <h1 align="center"> :scroll: NFT Certs </h1>
 <h3 align="center"> Education Certificates as NFTs</h3>
 
@@ -61,7 +59,7 @@ Moralis
 </li>
 
 <li>
-Intra-Planetary File System
+IPFS (Intra-Planetary File System)
 </li>
 
 <li>
@@ -81,6 +79,16 @@ Openzeppellin
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-<!-- Blockchain Network -->
 <h2 id="credits"> :chains: Network Deployed</h2>
 <p>The project was deployed on Polygon via the Mumbai Testnet</p>
+
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+<h2 id="credits"> :chains: Project Links</h2>
+<ul>
+<li>Live Project URL : <a target="_blank" href="https://nftcerts.netlify.app/"></a> </li>
+<li>NFTHack 2022 public URL :  <a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">Click Me</a></li>
+<li>Smart Contract Github URL : <a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat"></a>   </li>
+</ul>
+
