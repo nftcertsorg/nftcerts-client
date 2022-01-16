@@ -1,8 +1,9 @@
 
 
+<img src="readme/logo.svg" alt="Animated gif pacman game" height="382px">
 <h1 align="center"> :scroll: NFT Certs </h1>
+ <p align="center"> Make it easy to create and verify educational certificates as NFTs.</p>
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 <h2 id="credits"> :link: Project Links</h2>
 <ul>
