@@ -1,4 +1,7 @@
 
+
+<h1 align="center"> :scroll: NFT Certs </h1>
+
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 <h2 id="credits"> :link: Project Links</h2>
@@ -12,7 +15,7 @@
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 
-<h1 align="center"> :scroll: NFT Certs </h1>
+
 <h3 align="center"> Education Certificates as NFTs</h3>
 
 <p align="center"> 
