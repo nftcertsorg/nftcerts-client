@@ -12,7 +12,7 @@ import Link from "next/link";
 const navigation = [
   { name: "Create certificate", href: "/create", current: true },
   { name: "View certificate", href: "/certificates", current: false },
-  { name: "Example dapp", href: "/#", current: false },
+  { name: "Example dapp", href: "/dapp", current: false },
 ];
 
 export default function Navbar() {
