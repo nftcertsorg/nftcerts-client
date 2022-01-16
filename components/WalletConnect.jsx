@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
+import {useEnsAddress} from "../hooks/ens";
 
 const providerOptions = {
   /* See Provider Options Section */
@@ -10,6 +11,8 @@ let web3Modal = null;
 
 export default function WalletConnect() {
   const [address, setAddress] = useState('');
+
+  // console.log("ens name ",  useEnsAddress("0xb180fc7db413d965d0e6f8098f37e2df33a4347e"))
 
   const initWeb3 = () => {
     if (typeof window !== "undefined") {
@@ -27,6 +30,9 @@ export default function WalletConnect() {
     );
     const signer = provider.getSigner();
     setAddress(await signer.getAddress());
+
+
+
   };
 
   useEffect(() => {

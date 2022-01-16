@@ -1,23 +1,22 @@
 import {useEffect, useState} from "react";
 import {ethers} from "ethers";
-import axios from "axios"
 import {getAddressFromEns, getEnsNameFromAddress} from "../utils/api";
 import {convertChecksum} from "../utils/helpers";
-
+import ENS, { getEnsAddress } from '@ensdomains/ensjs'
 
 export function useEnsAddress(address) {
     const [name, setName] = useState(null);
 
     const getNameFromAddress = async () => {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const _address = convertChecksum(address)
 
-        const name = await provider.lookupAddress(_address)
-
-        setName(name)
+        const name =  await getEnsNameFromAddress(address)
+        setName(name.name)
     };
 
     useEffect(() => {
+
+
+
 
         getNameFromAddress();
     }, []);
@@ -31,11 +30,12 @@ export function useEnsName(name) {
 
     const getAddressFromName = async () => {
 
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const _address = await provider.resolveName(name);
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const _address = await provider.resolveName(name);
+        //
+        //
+        // setAddress(_address)
 
-
-        setAddress(_address)
 
     };
 
