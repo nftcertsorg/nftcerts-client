@@ -1,22 +1,25 @@
-import { ShieldCheckIcon } from "@heroicons/react/solid";
+import { ShieldCheckIcon, ShieldExclamationIcon } from "@heroicons/react/solid";
 import { useCallback, useEffect, useState } from "react";
 import { getNft, getIpfsMetadata } from "../../utils/api";
 import { truncateAddress, timeConverter } from "../../utils/utils";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { decrypt, getPublicKey } from "../../utils/encryption";
+import { ethers } from "ethers";
+import abi from "../../abi.json";
 
 function Certificate({ address, id }) {
   const [certificate, setCertificate] = useState(null);
   const [error, setError] = useState(null);
+  const [rawEncryptedData, setRawEncryptedData] = useState(null);
+  const [verification, setVerification] = useState(null);
 
   const getCertificate = useCallback(async () => {
     if (!address || !id) return;
     const nft = await getNft(address, id);
     const data = await getIpfsMetadata(nft.token_uri);
-    console.log(data);
     const metadata = data ? data : {};
     setCertificate({
-      ...data,
+      ...nft,
       metadata,
     });
   }, [address, id]);
@@ -25,6 +28,7 @@ function Certificate({ address, id }) {
     if (!certificate?.metadata?.encryption || !publicKey) return;
 
     const encryptedMetadata = certificate.metadata;
+    setRawEncryptedData(encryptedMetadata);
     const decryptedMetadata = {
       name: decrypt(encryptedMetadata["name"], publicKey),
       description: decrypt(encryptedMetadata["description"], publicKey),
@@ -110,7 +114,24 @@ function Certificate({ address, id }) {
     }
   };
 
-  console.log(certificate);
+  const hashData = (dataObject) => {
+    // We should only stringify once, the issue is caused by the double stringification in the create page
+    const stringified = JSON.stringify(JSON.stringify(dataObject));
+    return ethers.utils.id(stringified);
+  };
+
+  const verifyHash = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const signer = await provider.getSigner();
+
+    const NFTCerts = new ethers.Contract(
+      certificate.token_address,
+      abi.abi,
+      signer
+    );
+    const hash = await NFTCerts.getTokenMetadataHash(certificate.token_id);
+    setVerification(hash === hashData(rawEncryptedData || certificate.metadata));
+  };
 
   if (certificate?.metadata?.encryption)
     return (
@@ -214,13 +235,40 @@ function Certificate({ address, id }) {
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm font-medium text-slate-500">
-                  Verfication Hash
+                  Hash verification
                 </dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  <ShieldCheckIcon
-                    className="h-5 w-5 text-green-400"
-                    aria-hidden="true"
-                  />
+                  {verification !== null ? (
+                    <div className="flex space-x-2">
+                      {verification ? (
+                        <>
+                          <ShieldCheckIcon
+                            className="h-5 w-5 text-green-400"
+                            aria-hidden="true"
+                          />{" "}
+                          <span>Verified</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShieldExclamationIcon
+                            className="h-5 w-5 text-red-400"
+                            aria-hidden="true"
+                          />{" "}
+                          <span>Invalid hash</span>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        type="submit"
+                        onClick={verifyHash}
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-60 disabled:bg-gray-400 disabled:text-gray-700"
+                      >
+                        Check
+                      </button>
+                    </div>
+                  )}
                 </dd>
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
