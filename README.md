@@ -87,8 +87,8 @@ Openzeppellin
 
 <h2 id="credits"> :chains: Project Links</h2>
 <ul>
-<li>Live Project URL : <a target="_blank" href="https://nftcerts.netlify.app/"></a> </li>
-<li>NFTHack 2022 public URL :  <a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">Click Me</a></li>
-<li>Smart Contract Github URL : <a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat"></a>   </li>
+<li>Live Project URL : <a target="_blank" href="https://nftcerts.netlify.app/">Click Me</a> </li>
+<li>NFTHack 2022 Public URL :  <a target="_blank" href="https://showcase.ethglobal.co/nfthack2022/nftcerts">Click Me</a></li>
+<li>Smart Contract Github URL : <a target="_blank" href="https://github.com/nftcertsorg/nftcerts-hardhat">Click Me</a></li>
 </ul>
 
