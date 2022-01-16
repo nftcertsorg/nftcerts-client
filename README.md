@@ -30,7 +30,7 @@ We allow the recpients of the certificates to encrypt their certificate data and
 
 <h2>:lock: Secure Metadata</h2>
 <p>
-Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.
+Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored. Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.
  </p>
 
 
