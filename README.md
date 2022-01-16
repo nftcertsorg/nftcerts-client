@@ -1,35 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center"> 
+  <img src="image/Email Logo.png" alt="Email Logo.png" width="80px" height="80px">
+</p>
+<h1 align="center"> :scroll: NFT Certs </h1>
+<h3 align="center"> Education Certificates as NFTs</h3>
 
-## Getting Started
+<p align="center"> 
+<img src="gif/spam detector.gif" alt="Animated gif pacman game" height="382px">
+</p>
 
-First, run the development server:
+<p>
+We believe that in the future our digital identity will consist of token assets stored in web3 accounts. In this future we will need to provide a “proof of skill” in our assets to fluently cooperate with others.
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<h2> :books: IMS Learning Certification Standard</h2>
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+<p>
+Our educational certificate NFTs store their data based on one of the most recognised certification standards. The Open Badges standard by the IMS.
+</p>
+<img src="image/1.png" alt="Formula 1" style="max-width:100%;"></p>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<h2>Privacy Enabled
+</h2>
+<p>
+We allow the recpients of the certificates to encrypt their certificate data and only show the data to whom they choose.</p>
 
-## Learn More
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-To learn more about Next.js, take a look at the following resources:
+<h2>Secure Metadata</h2>
+<p>
+Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.
+ </p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Deploy on Vercel
+<!-- Technologies -->
+<h2 id="credits"> :floppy_disk:  Technologies</h2>
+<p>A list of project's technologies</p>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<ul>
+<li>
+Next JS
+</li><li>
+Ethers Js
+</li>
+<li>
+Moralis
+</li>
+<li>
+ENS system
+</li>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# nftcerts-client
+</ul>
