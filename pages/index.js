@@ -23,7 +23,7 @@ export default function LandingPage() {
               </div>
               <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
                 <a
-                  href="certificate"
+                  href="certificates"
                   className="text-nftcerts-primary w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
                 >
                   View Certificate
@@ -46,7 +46,7 @@ export default function LandingPage() {
                   nec.
                 </p>
                 <a
-                  href="#"
+                  href="dapp"
                   className="mt-8 bg-white border border-transparent rounded-md shadow px-5 py-3 inline-flex items-center text-base font-medium text-nftcerts-primary hover:bg-green-50"
                 >
                   Test Demo
