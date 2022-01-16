@@ -30,7 +30,7 @@ We allow the recpients of the certificates to encrypt their certificate data and
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-<h2>Secure Metadata</h2>
+<h2>:lock: Secure Metadata</h2>
 <p>
 Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.
  </p>
@@ -39,20 +39,48 @@ Our contracts store a hash of the meta data to be sure the metadata that is disp
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 <!-- Technologies -->
-<h2 id="credits"> :floppy_disk:  Technologies</h2>
+<h2 id="credits"> :technologist:  Technologies</h2>
 <p>A list of project's technologies</p>
 
 <ul>
+
 <li>
-Next JS
-</li><li>
+Solidty
+</li>
+
+<li>
+Next JS / React
+</li>
+
+<li>
 Ethers Js
 </li>
+
 <li>
 Moralis
 </li>
+
+<li>
+Intra-Planetary File System
+</li>
+
 <li>
 ENS system
 </li>
 
+<li>
+Web3Modal
+</li>
+
+
+<li>
+Openzeppellin
+</li>
 </ul>
+
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+<!-- Blockchain Network -->
+<h2 id="credits"> :chains: Network Deployed</h2>
+<p>The project was deployed on Polygon via the Mumbai Testnet</p>
