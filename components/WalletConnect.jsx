@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
+import { truncateAddress } from "../utils/utils";
+
 
 const providerOptions = {
   /* See Provider Options Section */
@@ -39,7 +41,16 @@ export default function WalletConnect() {
   return (
     <div>
       {address ? (
-        <span className="bg-gray-200 px-6 py-2 rounded-full">{address}</span>
+        <span className="bg-slate-100 text-slate-400 rounded-full p-0.5 inline-flex items-center ">
+        <img
+          className="inline-block h-5 w-5 rounded-full"
+          src={`https://avatar.tobi.sh/${address}.svg`}
+          alt="0x8DAf30dEa39Fb89c5E039065B7d1973863b38352"
+        />
+        <span className="pl-1 pr-2 text-sm font-medium">
+          {truncateAddress(address)}
+        </span>
+      </span>
       ) : (
         <button
           onClick={connect}
