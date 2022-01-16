@@ -1,9 +1,11 @@
 
 
-<img src="readme/logo.svg" alt="Animated gif pacman game" height="382px">
+<img src="readme/logo.svg" alt="Animated gif pacman game" height="200px">
  <p align="center"> Make it easy to create and verify educational certificates as NFTs.
 We believe that in the future our digital identity will consist of token assets stored in web3 accounts. In this future we will need to provide a “proof of skill” in our assets to fluently cooperate with others.
 </p>
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 
 <h2 id="credits"> :link: Project Links</h2>
@@ -14,7 +16,6 @@ We believe that in the future our digital identity will consist of token assets 
 </ul>
 
 
-[//]: # (![-----------------------------------------------------]&#40;https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png&#41;)
 
 [//]: # ()
 [//]: # ()
