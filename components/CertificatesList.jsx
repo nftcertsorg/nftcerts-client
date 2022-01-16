@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getNfts, getIpfsMetadata } from "../utils/api";
+import {getNfts, getIpfsMetadata, getEnsNameFromAddress} from "../utils/api";
 import { truncateAddress } from "../utils/utils";
 import Link from "next/link";
 import { LockClosedIcon } from "@heroicons/react/solid";
@@ -18,12 +18,23 @@ export default function CertificatesList({ address }) {
 
     const list = await Promise.all(
       result.map(async (nft) => {
-        const data = await getIpfsMetadata(nft.token_uri)
-        const metadata = data ? data : {};
-        return {
-          ...nft,
-          metadata,
-        };
+          try {
+              const data = await getIpfsMetadata(nft.token_uri)
+              const metadata = data ? data : {};
+
+              const ensName  = metadata.openBadge  && !metadata.encryption  ?  await getEnsNameFromAddress(metadata.openBadge.badge.issuer.id) : null
+
+              return {
+                  ...nft,
+                  metadata,
+                  ensName
+
+              };
+          }
+          catch (e) {
+              console.log({e})
+          }
+
       })
     );
 
@@ -31,6 +42,9 @@ export default function CertificatesList({ address }) {
       list.filter((certificate) => certificate.metadata.openBadge)
     );
   }, [address]);
+
+
+    console.log({certificates})
   
   useEffect(() => {
     fetchCertificates();
@@ -79,7 +93,7 @@ export default function CertificatesList({ address }) {
                       alt="0xCCb807F89269E7d563F83a2a6Cd0383CB8Df406E"
                     />
                     <span className="pl-1 pr-2 text-sm font-medium">
-                      {truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
+                      {certificate.ensName?.name ? certificate.ensName.name :  truncateAddress(certificate.metadata.openBadge.badge.issuer.id)}
                     </span>
                   </span>
                   </div>
