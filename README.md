@@ -47,7 +47,7 @@ Our educational certificate NFTs store their data based on one of the most recog
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-<h2>Privacy Enabled
+<h2>:man_technologist: Privacy Enabled
 </h2>
 <p>
 We allow the recpients of the certificates to encrypt their certificate data and only show the data to whom they choose.</p>
