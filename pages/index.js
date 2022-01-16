@@ -1,3 +1,26 @@
+import { BadgeCheckIcon, LockClosedIcon, KeyIcon } from '@heroicons/react/outline'
+
+const features = [
+  {
+    name: 'IMS Learning Certification Standard',
+    description:
+      'Our educational certificate NFTs store their data based on one of the most recognised certification standards. The Open Badges standard by the IMS.',
+    icon: BadgeCheckIcon,
+  },
+  {
+    name: 'Privacy Enabled',
+    description:
+      'We allow the recpients of the certificates to encrypt their certificate data and only show the data to whom they choose.',
+    icon: KeyIcon,
+  },
+  {
+    name: 'Secure Metadata',
+    description:
+      'Our contracts store a hash of the meta data to be sure the metadata that is displayed is the same as the data stored.',
+    icon: LockClosedIcon,
+  },
+]
+
 export default function LandingPage() {
   return (
     <div className="relative bg-gray-50 overflow-hidden">
@@ -33,7 +56,33 @@ export default function LandingPage() {
           </div>
         </main>
 
-        <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 mt-32">
+        <div className="relative bg-grey-50 py-16 sm:py-24 lg:py-40">
+          <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
+            <div className="mt-12">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                {features.map((feature) => (
+                  <div key={feature.name} className="pt-6">
+                    <div className="flow-root bg-white rounded-lg px-6 pb-8">
+                      <div className="-mt-6">
+                        <div>
+                          <span className="inline-flex items-center justify-center p-3 bg-gray-700 rounded-md shadow-lg">
+                            <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                          </span>
+                        </div>
+                        <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">{feature.name}</h3>
+                        <p className="mt-5 text-base text-gray-500">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
           <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden lg:grid lg:grid-cols-2 lg:gap-4">
             <div className="pt-10 pb-12 px-6 sm:pt-16 sm:px-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
               <div className="lg:self-center">
@@ -61,6 +110,9 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+
+
+
       </div>
     </div>
   )
