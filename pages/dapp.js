@@ -26,9 +26,11 @@ export default function Dapp() {
     const json = await getNfts(_userAddr);
     const valid = checkValidNFT(json.result);
     setChecked(true);
-    frame();
     if (!valid) {
+      // change this to modify page change
       setFailure(true);
+    } else {
+      frame();
     }
   };
 
