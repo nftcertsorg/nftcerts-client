@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { getNfts } from "../utils/api";
+import { getNfts, getIpfsMetadata } from "../utils/api";
 import { useState } from "react";
 import frame from "../utils/confetti";
 
@@ -7,10 +7,11 @@ export default function Dapp() {
   const [failure, setFailure] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const checkValidNFT = (nftArr) => {
+  const checkValidNFT = async (nftArr) => {
     for (const nft of nftArr) {
+      const metadata = await getIpfsMetadata(nft.token_uri)
       if (
-        JSON.parse(nft.metadata).openBadge[0].badge.id ===
+        metadata.openBadge.badge.id ===
         "0xa15535da2a270672c91caa094518f7940cecadcacaf317a17f5ee58a2fded4ce" // hardcoded certificate id
       ) {
         return true;

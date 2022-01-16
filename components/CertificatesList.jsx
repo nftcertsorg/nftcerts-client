@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getNfts } from "../utils/api";
+import { getNfts, getIpfsMetadata } from "../utils/api";
 import Link from "next/link";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
@@ -17,13 +17,15 @@ export default function CertificatesList({ address }) {
 
     const list = await Promise.all(
       result.map(async (nft) => {
-        const metadata = nft.metadata ? JSON.parse(nft.metadata) : {};
+        const data = await getIpfsMetadata(nft.token_uri)
+        const metadata = data ? data : {};
         return {
           ...nft,
           metadata,
         };
       })
     );
+
     setCertificates(
       list.filter((certificate) => certificate.metadata.openBadge)
     );
